@@ -1,0 +1,56 @@
+.about-section {
+  margin-top: 36px;
+  padding: 24px;
+  border: 1px solid var(--stroke);
+  border-radius: 22px;
+  background: rgba(255,255,255,0.75);
+  box-shadow: var(--shadow-soft);
+  text-align: center;
+}
+
+.about-text {
+  margin: 12px auto 0;
+  max-width: 700px;
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--muted);
+  text-align: center;
+
+}
+
+.about-highlights {
+  margin-top: 18px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  
+}
+
+.about-card {
+  border: 1px solid var(--stroke);
+  background: rgba(255,255,255,0.85);
+  border-radius: 16px;
+  padding: 14px;
+  
+}
+
+.about-card h3 {
+  margin: 0 0 6px;
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.about-card p {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--muted);
+  
+}
+
+/* Phone support (if enabled elsewhere) */
+@media (max-width: 900px) {
+  .about-highlights {
+    grid-template-columns: 1fr;
+  }
+}
