@@ -1,4 +1,3 @@
-import logo from "../Assets/pic.png";
 import creamy from "../Assets/creamy.png";
 import crunchy from "../Assets/crunchy.png";
 import cocoa from "../Assets/cocoa.png";
