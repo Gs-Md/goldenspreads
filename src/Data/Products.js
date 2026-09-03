@@ -2,7 +2,6 @@ import creamy from "../Assets/creamy.jpg";
 import crunchy from "../Assets/crunchy.jpg";
 import dates from "../Assets/dates.jpg";
 import protein from "../Assets/protein.jpg";
-import comingSoon from "../Assets/comingsoon.jpg";
 import cocoaDates from "../Assets/cocoaDates.jpg";
 
 const products = [
