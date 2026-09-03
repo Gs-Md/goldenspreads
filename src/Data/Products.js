@@ -28,36 +28,35 @@ const products = [
   },
   {
     id: 3,
-    name: "Cocoa Peanut Butter",
-    price: "$6.00",
-    weight: "300 g",
-    image: comingSoon,
-    ingredients: "Peanuts, Cocoa powder",
-    info: ["Palm Oil Free", "Gluten Free", "No Added Sugars", "No Preservatives"],
-    bestUse: "Toast, Pancake, Apple slices, Banana sandwiches, Smoothies, OatMeals.",
-  },
-  {
-    id: 4,
-        featured: true,
-
+    featured: true,
     name: "Dates Peanut Butter",
-    price: "$6.00",
+    price: "$5.00",
     weight: "300 g",
-    image: comingSoon,
+    image: dates,
     ingredients: "Peanuts, Dates",
     info: ["Organic", "Naturally Sweetened", "Gluten Free","Natural Energy Booster"],
     bestUse: "Toast, Pancake,Yogurt Bowls, Energy Balls, Smoothies, OatMeals.",
   },
   {
-    id: 5,
-    name: "Protein Powder Peanut Butter",
-    price: "$8.00",
+    id: 4,
+    name: "Cocoa & Dates Peanut Butter",
+    price: "$6.00",
     weight: "300 g",
     image: comingSoon,
+    ingredients: "Peanuts, Cocoa , Dates",
+    info: ["Palm Oil Free", "No Preservatives","Natural Energy Booster"],
+    bestUse: "Smoothies, OatMeals, Protein shakes, Waffles, Pancakes, Rice Cake.",
+  },
+  {
+    id: 5,
+    name: "Protein Powder Peanut Butter",
+    price: "$7.00",
+    weight: "300 g",
+    image: protein,
     ingredients: "Peanuts, whey protein",
     info: ["High Protein (130g)", "Palm Oil Free", "No Preservatives","Natural Energy Booster"],
     bestUse: "Smoothies, OatMeals, Protein shakes, Waffles, Pancakes, Rice Cake.",
-  },
+  }
 ];
 
 export default products;
