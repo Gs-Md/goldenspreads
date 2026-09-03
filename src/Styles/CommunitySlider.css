@@ -1,0 +1,238 @@
+.community-section {
+  margin-top: 34px;
+  padding: 26px;
+  border: 1px solid var(--stroke);
+  border-radius: 22px;
+  background:
+    radial-gradient(700px 220px at 10% 0%, rgba(184, 137, 11, 0.13), transparent 65%),
+    rgba(255, 255, 255, 0.78);
+  box-shadow: var(--shadow-soft);
+  overflow: hidden;
+}
+
+.community-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 18px;
+}
+
+.community-eyebrow {
+  display: inline-block;
+  margin-bottom: 6px;
+  color: var(--gold);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+}
+
+.community-title {
+  margin: 0;
+  font-family: Fraunces, serif;
+  font-size: 28px;
+}
+
+.community-subtitle {
+  margin: 6px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.community-arrows {
+  display: flex;
+  gap: 8px;
+  flex: 0 0 auto;
+}
+
+.community-arrow {
+  width: 42px;
+  height: 42px;
+  border: 1px solid rgba(184, 137, 11, 0.35);
+  border-radius: 50%;
+  background: #fff;
+  color: var(--text);
+  cursor: pointer;
+  font-size: 20px;
+  line-height: 1;
+  transition: transform 160ms ease, background 160ms ease, border-color 160ms ease;
+}
+
+.community-arrow:hover {
+  transform: translateY(-2px);
+  border-color: var(--gold);
+  background: var(--gold-soft);
+}
+
+.community-arrow:focus-visible,
+.community-dot:focus-visible {
+  outline: 3px solid rgba(184, 137, 11, 0.28);
+  outline-offset: 2px;
+}
+
+.community-slider-shell {
+  overflow: hidden;
+}
+
+.community-track {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  padding: 2px 1px 10px;
+}
+
+.community-track::-webkit-scrollbar {
+  display: none;
+}
+
+.community-card {
+  flex: 0 0 calc((100% - 32px) / 3);
+  min-width: 0;
+  scroll-snap-align: start;
+  border: 1px solid rgba(0, 0, 0, 0.07);
+  border-radius: 17px;
+  background: #fff;
+  overflow: hidden;
+  opacity: 0.82;
+  transform: translateY(0);
+  transition: opacity 220ms ease, transform 220ms ease, box-shadow 220ms ease;
+}
+
+.community-card.is-active {
+  opacity: 1;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
+}
+
+.community-image-wrap {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  background: #f2ede4;
+  overflow: hidden;
+}
+
+.community-image {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+.community-image.is-contain {
+  object-fit: contain;
+  padding: 8px;
+  background: #f8f4ec;
+}
+
+.community-tag {
+  position: absolute;
+  left: 12px;
+  top: 12px;
+  padding: 7px 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.92);
+  color: #6f5100;
+  border: 1px solid rgba(184, 137, 11, 0.24);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  backdrop-filter: blur(8px);
+}
+
+.community-card-copy {
+  padding: 14px 14px 16px;
+}
+
+.community-card-copy h3 {
+  margin: 0;
+  font-family: Fraunces, serif;
+  font-size: 17px;
+}
+
+.community-card-copy p {
+  margin: 6px 0 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.community-dots {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  margin-top: 10px;
+}
+
+.community-dot {
+  width: 8px;
+  height: 8px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(31, 31, 31, 0.2);
+  cursor: pointer;
+  transition: width 160ms ease, border-radius 160ms ease, background 160ms ease;
+}
+
+.community-dot.is-active {
+  width: 24px;
+  border-radius: 999px;
+  background: var(--gold);
+}
+
+@media (max-width: 820px) {
+  .community-section {
+    padding: 20px;
+  }
+
+  .community-card {
+    flex-basis: calc((100% - 16px) / 2);
+  }
+}
+
+@media (max-width: 560px) {
+  .community-section {
+    margin-top: 26px;
+    padding: 16px;
+  }
+
+  .community-heading {
+    align-items: center;
+  }
+
+  .community-title {
+    font-size: 23px;
+  }
+
+  .community-subtitle {
+    font-size: 12px;
+  }
+
+  .community-arrow {
+    width: 38px;
+    height: 38px;
+  }
+
+  .community-card {
+    flex-basis: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .community-track {
+    scroll-behavior: auto;
+  }
+
+  .community-card,
+  .community-arrow,
+  .community-dot {
+    transition: none;
+  }
+}
