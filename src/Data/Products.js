@@ -1,9 +1,9 @@
 import creamy from "../Assets/creamy.jpg";
 import crunchy from "../Assets/crunchy.jpg";
-import cocoa from "../Assets/cocoa.jpg";
 import dates from "../Assets/dates.jpg";
 import protein from "../Assets/protein.jpg";
 import comingSoon from "../Assets/comingsoon.jpg";
+import cocoaDates from "../Assets/cocoaDates.jpg";
 
 const products = [
   {
@@ -21,7 +21,7 @@ const products = [
     name: "Crunchy Peanut Butter",
     price: "$4.00",
     weight: "300 g",
-    image: comingSoon,
+    image: crunchy,
     ingredients: "Roasted peanuts, Peanut pieces",
     info: ["No Added Sugars", "Gluten Free", "Keto Friendly","Organic"],
     bestUse: "Toast, Yogurt bowls, Apple slices, Banana sandwiches, OatMeals.",
@@ -42,7 +42,7 @@ const products = [
     name: "Cocoa & Dates Peanut Butter",
     price: "$6.00",
     weight: "300 g",
-    image: comingSoon,
+    image: cocoaDates,
     ingredients: "Peanuts, Cocoa , Dates",
     info: ["Palm Oil Free", "No Preservatives","Natural Energy Booster"],
     bestUse: "Smoothies, OatMeals, Protein shakes, Waffles, Pancakes, Rice Cake.",
