@@ -3,6 +3,7 @@ import products from "../Data/Products";
 import About from "../Pages/About";
 import logo from "../Assets/pic.png";
 import CommunitySlider from "../Components/CommunitySlider";
+import QualityTest from "../Components/QualityTest";
 
 export default function Home() {
   return (
@@ -39,6 +40,7 @@ export default function Home() {
         </div>
       </section>
       <About />
+      <QualityTest />
       <CommunitySlider />
     </main>
   );
