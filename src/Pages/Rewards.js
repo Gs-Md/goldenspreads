@@ -1,34 +1,15 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-
 import { authClient } from "../lib/authClient";
 import { loyaltyRequest } from "../lib/loyaltyApi";
-
 import "../Styles/Rewards.css";
-
-// ======================================================
-// GOLDEN SPREADS REWARDS
-//
-// NEW CUSTOMER:
-// Register -> Verify email -> Golden Wallet
-//
-// RETURNING CUSTOMER:
-// Sign in -> Login OTP -> Golden Wallet
-//
-// Authentication and MFA are verified by the backend.
-// ======================================================
+import jarImage from "../Assets/jar.png";
 
 const PENDING_EMAIL = "goldenPendingVerificationEmail";
 const PENDING_PHONE = "goldenPendingPhone";
 
-// ======================================================
-// HELPERS
-// ======================================================
-
 function cleanEmail(value) {
-  return String(value || "")
-    .trim()
-    .toLowerCase();
+  return String(value || "").trim().toLowerCase();
 }
 
 function validEmail(value) {
@@ -54,20 +35,44 @@ function isVerificationError(error) {
   );
 }
 
-// ======================================================
-// NOT CONFIGURED
-// ======================================================
+function RewardsBrandPanel() {
+  return (
+    <aside className="rewards-auth-brand" aria-label="Golden Spreads">
+      <img
+        src={jarImage}
+        alt="Golden Spreads signature jar"
+        className="rewards-brand-image"
+        draggable="false"
+      />
+
+      <div className="rewards-brand-shade" aria-hidden="true" />
+
+      <div className="rewards-brand-copy">
+        <span className="rewards-brand-kicker">
+          THE GOLDEN COLLECTION
+        </span>
+
+        <h2>Goodness in every spoon.</h2>
+
+        <p>SMALL BATCH. BIG ON FLAVOUR.</p>
+      </div>
+
+      <div className="rewards-brand-footer" aria-hidden="true">
+        <span>GOLDEN SPREADS</span>
+        <span>✦</span>
+        <span>MADE TO BE SHARED</span>
+      </div>
+    </aside>
+  );
+}
 
 function SetupMessage() {
   return (
     <main className="rewards-page">
       <section className="rewards-panel rewards-notice">
         <span className="rewards-eyebrow">GOLDEN SPREADS</span>
-
         <h1>Golden Rewards is almost ready</h1>
-
         <p>The public Neon Auth URL has not been configured.</p>
-
         <Link className="rewards-button" to="/">
           Back to Golden Spreads
         </Link>
@@ -75,10 +80,6 @@ function SetupMessage() {
     </main>
   );
 }
-
-// ======================================================
-// SIGN OUT
-// ======================================================
 
 async function clearAuthSession() {
   await fetch("/api/loyalty/auth/logout", {
@@ -93,10 +94,6 @@ async function clearAuthSession() {
     throw new Error(result.error.message || "Unable to sign out.");
   }
 }
-
-// ======================================================
-// FINISH-SIGNUP API
-// ======================================================
 
 async function finishSignupRequest(action, data = {}) {
   const response = await fetch("/api/loyalty/auth/finish-signup", {
@@ -121,10 +118,6 @@ async function finishSignupRequest(action, data = {}) {
   return result;
 }
 
-// ======================================================
-// CREATE ACCOUNT / SIGN IN
-// ======================================================
-
 function AuthForm({
   initialMode = "signup",
   notice = "",
@@ -136,21 +129,15 @@ function AuthForm({
   onAuthSuccess,
 }) {
   const [mode, setMode] = useState(initialMode);
-
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
 
   const emailAddress = cleanEmail(email);
-
-  // --------------------------------------------------
-  // CONTINUE AN EXISTING UNVERIFIED REGISTRATION
-  // --------------------------------------------------
 
   function continueVerification() {
     if (!validEmail(emailAddress)) {
@@ -160,15 +147,9 @@ function AuthForm({
 
     setError("");
     setMessage("");
-
     sessionStorage.setItem(PENDING_EMAIL, emailAddress);
-
     onVerificationNeeded(emailAddress, password);
   }
-
-  // --------------------------------------------------
-  // SUBMIT SIGNUP OR SIGNIN
-  // --------------------------------------------------
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -189,10 +170,6 @@ function AuthForm({
       if (!validEmail(emailAddress)) {
         throw new Error("Enter a valid email address.");
       }
-
-      // ==============================================
-      // NEW ACCOUNT
-      // ==============================================
 
       if (signingUp) {
         if (!name.trim()) {
@@ -215,19 +192,12 @@ function AuthForm({
           sessionStorage.setItem(PENDING_PHONE, phone.trim());
         }
 
-        // Keep verification pending across a refresh.
         sessionStorage.setItem(PENDING_EMAIL, emailAddress);
-
         setPassword("");
 
-        // Directly show the six-digit code screen.
         onVerificationNeeded(emailAddress, password);
         return;
       }
-
-      // ==============================================
-      // RETURNING CUSTOMER
-      // ==============================================
 
       const result = await authClient.signIn.email({
         email: emailAddress,
@@ -236,17 +206,14 @@ function AuthForm({
 
       if (result?.error) {
         const authError = new Error(result.error.message || "Sign in failed.");
-
         authError.code = result.error.code;
         throw authError;
       }
 
-      // Existing customers still require backend MFA.
       onAuthSuccess(password);
     } catch (err) {
       if (!signingUp && isVerificationError(err)) {
         sessionStorage.setItem(PENDING_EMAIL, emailAddress);
-
         onVerificationNeeded(emailAddress, password);
       } else {
         setError(getErrorMessage(err, "Unable to complete this request."));
@@ -260,12 +227,10 @@ function AuthForm({
     }
   }
 
-  // --------------------------------------------------
-  // INTERFACE
-  // --------------------------------------------------
-
   return (
     <section className="rewards-auth-card">
+      <RewardsBrandPanel />
+
       <div className="rewards-card-heading">
         <span className="rewards-eyebrow">GOLDEN SPREADS REWARDS</span>
 
@@ -330,6 +295,7 @@ function AuthForm({
           <>
             <label>
               Full name
+
               <input
                 autoComplete="name"
                 value={name}
@@ -342,6 +308,7 @@ function AuthForm({
 
             <label>
               Phone number <span className="rewards-optional">(optional)</span>
+
               <input
                 autoComplete="tel"
                 value={phone}
@@ -355,6 +322,7 @@ function AuthForm({
 
         <label>
           Email address
+
           <input
             type="email"
             autoComplete="email"
@@ -368,6 +336,7 @@ function AuthForm({
 
         <label>
           Password
+
           <input
             type="password"
             autoComplete={
@@ -431,24 +400,14 @@ function AuthForm({
   );
 }
 
-// ======================================================
-// VERIFY EMAIL AND AUTOMATICALLY OPEN WALLET
-// ======================================================
-
 function SignupVerification({ email, initialPassword = "", onBack }) {
   const [code, setCode] = useState("");
   const [password, setPassword] = useState(initialPassword);
-
   const [emailVerified, setEmailVerified] = useState(false);
   const [needsPassword, setNeedsPassword] = useState(false);
-
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
-
-  // --------------------------------------------------
-  // COMPLETE SIGNUP SESSION
-  // --------------------------------------------------
 
   async function completeSignup(accountPassword) {
     if (!accountPassword) {
@@ -457,9 +416,6 @@ function SignupVerification({ email, initialPassword = "", onBack }) {
       return;
     }
 
-    // The customer already chose this password when
-    // registering. This happens automatically during
-    // a normal new signup.
     const signInResult = await authClient.signIn.email({
       email,
       password: accountPassword,
@@ -471,8 +427,6 @@ function SignupVerification({ email, initialPassword = "", onBack }) {
       );
     }
 
-    // The backend checks the actual Neon session and
-    // the signed proof of successful email verification.
     const result = await loyaltyRequest("/api/loyalty/auth/finish-signup", {
       method: "POST",
       body: JSON.stringify({
@@ -484,21 +438,12 @@ function SignupVerification({ email, initialPassword = "", onBack }) {
       throw new Error("Your account could not be fully activated.");
     }
 
-    // Only clear the pending registration after
-    // the backend has authenticated it successfully.
     sessionStorage.removeItem(PENDING_EMAIL);
-
     setPassword("");
     setMessage("Welcome to Golden Rewards!");
 
-    // Refresh session state and go directly to wallet.
-    // No second login OTP is requested.
     window.location.reload();
   }
-
-  // --------------------------------------------------
-  // VERIFY SIX-DIGIT EMAIL CODE
-  // --------------------------------------------------
 
   async function verifyEmail(event) {
     event.preventDefault();
@@ -524,8 +469,6 @@ function SignupVerification({ email, initialPassword = "", onBack }) {
       setEmailVerified(true);
       setCode("");
 
-      // The code was accepted by Neon on the server.
-      // No second email verification is necessary.
       if (!password) {
         setNeedsPassword(true);
         setMessage("Email verified. Enter your password to open your wallet.");
@@ -533,14 +476,10 @@ function SignupVerification({ email, initialPassword = "", onBack }) {
       }
 
       setMessage("Email verified. Opening your Golden Wallet...");
-
       await completeSignup(password);
     } catch (err) {
       setError(getErrorMessage(err, "Verification failed. Try again."));
 
-      // If the email OTP was accepted but session
-      // completion failed, don't ask for the same
-      // already-consumed OTP again.
       if (emailVerified) {
         setNeedsPassword(true);
       }
@@ -548,10 +487,6 @@ function SignupVerification({ email, initialPassword = "", onBack }) {
       setBusy(false);
     }
   }
-
-  // --------------------------------------------------
-  // RETRY COMPLETION USING PASSWORD
-  // --------------------------------------------------
 
   async function continueSignup(event) {
     event.preventDefault();
@@ -566,6 +501,7 @@ function SignupVerification({ email, initialPassword = "", onBack }) {
       await completeSignup(password);
     } catch (err) {
       setNeedsPassword(true);
+
       setError(
         getErrorMessage(err, "Unable to finish your registration.") +
           " If verification has expired, return to sign in and complete the normal login verification.",
@@ -574,10 +510,6 @@ function SignupVerification({ email, initialPassword = "", onBack }) {
       setBusy(false);
     }
   }
-
-  // --------------------------------------------------
-  // RESEND EMAIL VERIFICATION CODE
-  // --------------------------------------------------
 
   async function resendCode() {
     if (busy || emailVerified) return;
@@ -610,12 +542,10 @@ function SignupVerification({ email, initialPassword = "", onBack }) {
     }
   }
 
-  // --------------------------------------------------
-  // INTERFACE
-  // --------------------------------------------------
-
   return (
     <section className="rewards-auth-card">
+      <RewardsBrandPanel />
+
       <div className="rewards-card-heading">
         <span className="rewards-eyebrow">GOLDEN SPREADS REWARDS</span>
 
@@ -651,6 +581,7 @@ function SignupVerification({ email, initialPassword = "", onBack }) {
           <form className="rewards-form" onSubmit={verifyEmail}>
             <label>
               Six-digit verification code
+
               <input
                 type="text"
                 inputMode="numeric"
@@ -692,6 +623,7 @@ function SignupVerification({ email, initialPassword = "", onBack }) {
           {needsPassword && (
             <label>
               Your account password
+
               <input
                 type="password"
                 autoComplete="current-password"
@@ -731,25 +663,15 @@ function SignupVerification({ email, initialPassword = "", onBack }) {
   );
 }
 
-// ======================================================
-// RETURNING CUSTOMER — LOGIN MFA
-// ======================================================
-
 function LoginVerification({ initialPassword = "", onVerified }) {
   const [password, setPassword] = useState(initialPassword);
-
   const [challengeId, setChallengeId] = useState("");
   const [code, setCode] = useState("");
-
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
 
   const started = useRef(false);
-
-  // --------------------------------------------------
-  // SEND LOGIN OTP
-  // --------------------------------------------------
 
   async function sendLoginCode(candidatePassword) {
     if (!candidatePassword || candidatePassword.length < 8) {
@@ -775,7 +697,6 @@ function LoginVerification({ initialPassword = "", onVerified }) {
 
       setChallengeId(result.challengeId);
       setCode("");
-
       setMessage(result.message || "Check your email for the login code.");
     } catch (err) {
       setError(getErrorMessage(err, "Unable to send login code."));
@@ -784,19 +705,12 @@ function LoginVerification({ initialPassword = "", onVerified }) {
     }
   }
 
-  // Automatically request OTP after sign-in.
   useEffect(() => {
     if (initialPassword && !started.current) {
       started.current = true;
       sendLoginCode(initialPassword);
     }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initialPassword]);
-
-  // --------------------------------------------------
-  // VERIFY LOGIN OTP
-  // --------------------------------------------------
 
   async function verifyLogin(event) {
     event.preventDefault();
@@ -823,7 +737,6 @@ function LoginVerification({ initialPassword = "", onVerified }) {
 
       setPassword("");
       setCode("");
-
       onVerified();
     } catch (err) {
       setError(getErrorMessage(err, "Incorrect or expired login code."));
@@ -832,12 +745,10 @@ function LoginVerification({ initialPassword = "", onVerified }) {
     }
   }
 
-  // --------------------------------------------------
-  // INTERFACE
-  // --------------------------------------------------
-
   return (
     <section className="rewards-auth-card">
+      <RewardsBrandPanel />
+
       <span className="rewards-eyebrow">GOLDEN SPREADS REWARDS</span>
 
       <h1>Confirm your login</h1>
@@ -866,6 +777,7 @@ function LoginVerification({ initialPassword = "", onVerified }) {
         >
           <label>
             Confirm password
+
             <input
               type="password"
               autoComplete="current-password"
@@ -886,6 +798,7 @@ function LoginVerification({ initialPassword = "", onVerified }) {
           <form className="rewards-form" onSubmit={verifyLogin}>
             <label>
               Six-digit login code
+
               <input
                 type="text"
                 inputMode="numeric"
@@ -939,14 +852,6 @@ function LoginVerification({ initialPassword = "", onVerified }) {
   );
 }
 
-// ======================================================
-// GOLDEN WALLET
-// ======================================================
-
-// ==================================================
-// REDEMPTION REQUEST RECOVERY
-// ==================================================
-
 const REDEMPTION_REQUEST_ID_PATTERN =
   /^[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}$/i;
 
@@ -981,7 +886,6 @@ function redemptionStorageKey(userId) {
 function readPendingRedemptionId(userId) {
   try {
     const id = localStorage.getItem(redemptionStorageKey(userId));
-
     return REDEMPTION_REQUEST_ID_PATTERN.test(id || "") ? id : null;
   } catch {
     return null;
@@ -998,7 +902,6 @@ function savePendingRedemptionId(userId, requestId) {
     }
 
     localStorage.setItem(key, requestId);
-
     return requestId;
   } catch {
     return null;
@@ -1024,22 +927,17 @@ function clearPendingRedemptionId(userId, requestId) {
 function Wallet({ session, onReturnToSignIn }) {
   const [wallet, setWallet] = useState(null);
   const [phone, setPhone] = useState("");
-
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [errorStatus, setErrorStatus] = useState(null);
   const [isAdmin, setIsAdmin] = useState(false);
-  // Restore unfinished redemption after a page refresh.
+
   const [pendingRedemptionId, setPendingRedemptionId] = useState(() =>
     readPendingRedemptionId(session.user.id),
   );
 
-  // Prevent simultaneous redemption submissions.
   const redeemingRef = useRef(false);
-  // --------------------------------------------------
-  // LOAD WALLET
-  // --------------------------------------------------
 
   async function loadWallet() {
     const data = await loyaltyRequest("/api/loyalty/me");
@@ -1053,10 +951,6 @@ function Wallet({ session, onReturnToSignIn }) {
     setError("");
     setErrorStatus(null);
   }
-
-  // --------------------------------------------------
-  // INITIAL WALLET LOAD
-  // --------------------------------------------------
 
   useEffect(() => {
     let active = true;
@@ -1103,7 +997,6 @@ function Wallet({ session, onReturnToSignIn }) {
       } catch (err) {
         if (active) {
           setError(getErrorMessage(err, "Could not load your wallet."));
-
           setErrorStatus(err.status || null);
         }
       }
@@ -1116,10 +1009,6 @@ function Wallet({ session, onReturnToSignIn }) {
     };
   }, [session.user.id]);
 
-  // --------------------------------------------------
-  // RETURN TO SIGN IN
-  // --------------------------------------------------
-
   async function returnToSignIn() {
     setBusy(true);
     setError("");
@@ -1128,7 +1017,6 @@ function Wallet({ session, onReturnToSignIn }) {
 
     try {
       await clearAuthSession();
-
       notice = "Your previous session has been cleared. Sign in again.";
     } catch (err) {
       notice =
@@ -1139,10 +1027,6 @@ function Wallet({ session, onReturnToSignIn }) {
     onReturnToSignIn(notice);
     setBusy(false);
   }
-
-  // --------------------------------------------------
-  // SAVE PHONE NUMBER
-  // --------------------------------------------------
 
   async function savePhone(event) {
     event.preventDefault();
@@ -1159,166 +1043,145 @@ function Wallet({ session, onReturnToSignIn }) {
       });
 
       setMessage("Your contact number has been saved.");
-
       await loadWallet();
     } catch (err) {
       setError(getErrorMessage(err, "Could not save your phone number."));
-
       setErrorStatus(err.status || null);
     } finally {
       setBusy(false);
     }
   }
 
-  // --------------------------------------------------
-  // REDEEM POINTS
-  // --------------------------------------------------
-
-  // --------------------------------------------------
-  // REDEEM POINTS - REFRESH SAFE
-  // --------------------------------------------------
-
   async function redeemReward() {
-  if (redeemingRef.current) return;
+    if (redeemingRef.current) return;
 
-  redeemingRef.current = true;
-  setBusy(true);
-  setError('');
-  setErrorStatus(null);
-  setMessage('');
+    redeemingRef.current = true;
+    setBusy(true);
+    setError("");
+    setErrorStatus(null);
+    setMessage("");
 
-  let requestId = pendingRedemptionId;
-  let redemptionConfirmed = false;
-  let confirmedCode = '';
+    let requestId = pendingRedemptionId;
+    let redemptionConfirmed = false;
+    let confirmedCode = "";
 
-  try {
-    if (!requestId) {
-      requestId = createRedemptionRequestId();
-    }
-
-    const savedRequestId = savePendingRedemptionId(
-      session.user.id,
-      requestId
-    );
-
-    if (!savedRequestId) {
-      throw new Error(
-        'Unable to save redemption request. No request was sent.'
-      );
-    }
-
-    requestId = savedRequestId;
-    setPendingRedemptionId(requestId);
-
-    const result = await loyaltyRequest(
-      '/api/loyalty/redeem',
-      {
-        method: 'POST',
-        body: JSON.stringify({ requestId }),
-      }
-    );
-
-    if (!result?.redemption?.redemption_code) {
-      throw new Error(
-        'No reward code returned. Retry using the same request.'
-      );
-    }
-
-    // Redemption is now confirmed.
-    redemptionConfirmed = true;
-    confirmedCode = result.redemption.redemption_code;
-
-    const cleared = clearPendingRedemptionId(
-      session.user.id,
-      requestId
-    );
-
-    if (cleared) {
-      setPendingRedemptionId(null);
-    }
-
-    setMessage(
-      `Your $1 reward code is ${confirmedCode}. ` +
-      'Show it to Golden Spreads when placing your next order. ' +
-      'It expires in 30 days.'
-    );
-
-    const warnings = [];
-
-    if (!cleared) {
-      warnings.push(
-        'The saved request could not be cleared. Retry the same request.'
-      );
-    }
-
-    // Refresh wallet separately.
     try {
-      await loadWallet();
-    } catch (refreshError) {
-      warnings.push(
-        'Wallet refresh failed. Refresh the page to update your balance. ' +
-        getErrorMessage(refreshError, '')
+      if (!requestId) {
+        requestId = createRedemptionRequestId();
+      }
+
+      const savedRequestId = savePendingRedemptionId(
+        session.user.id,
+        requestId
       );
 
-      setErrorStatus(refreshError.status || null);
-    }
+      if (!savedRequestId) {
+        throw new Error(
+          "Unable to save redemption request. No request was sent."
+        );
+      }
 
-    if (warnings.length) {
-      setError(
-        'Your reward was created successfully. ' +
-        warnings.join(' ')
+      requestId = savedRequestId;
+      setPendingRedemptionId(requestId);
+
+      const result = await loyaltyRequest(
+        "/api/loyalty/redeem",
+        {
+          method: "POST",
+          body: JSON.stringify({ requestId }),
+        }
       );
-    }
 
-  } catch (err) {
+      if (!result?.redemption?.redemption_code) {
+        throw new Error(
+          "No reward code returned. Retry using the same request."
+        );
+      }
 
-    if (redemptionConfirmed) {
+      redemptionConfirmed = true;
+      confirmedCode = result.redemption.redemption_code;
+
+      const cleared = clearPendingRedemptionId(
+        session.user.id,
+        requestId
+      );
+
+      if (cleared) {
+        setPendingRedemptionId(null);
+      }
+
       setMessage(
         `Your $1 reward code is ${confirmedCode}. ` +
-        'Show it to Golden Spreads when placing your next order. ' +
-        'It expires in 30 days.'
+        "Show it to Golden Spreads when placing your next order. " +
+        "It expires in 30 days."
       );
 
-      setError(
-        'Your reward was created successfully, but part of the wallet update failed. Refresh the page.'
-      );
+      const warnings = [];
 
-    } else {
-
-      const definitelyNotProcessed = [
-        400, 401, 403, 404, 405
-      ].includes(Number(err.status));
-
-      if (definitelyNotProcessed && requestId) {
-        const cleared = clearPendingRedemptionId(
-          session.user.id,
-          requestId
+      if (!cleared) {
+        warnings.push(
+          "The saved request could not be cleared. Retry the same request."
         );
-
-        if (cleared) {
-          setPendingRedemptionId(null);
-        }
       }
 
-      setError(
-        getErrorMessage(
-          err,
-          'Could not redeem your points. Your request remains saved for retry.'
-        )
-      );
+      try {
+        await loadWallet();
+      } catch (refreshError) {
+        warnings.push(
+          "Wallet refresh failed. Refresh the page to update your balance. " +
+          getErrorMessage(refreshError, "")
+        );
 
-      setErrorStatus(err.status || null);
+        setErrorStatus(refreshError.status || null);
+      }
+
+      if (warnings.length) {
+        setError(
+          "Your reward was created successfully. " +
+          warnings.join(" ")
+        );
+      }
+    } catch (err) {
+      if (redemptionConfirmed) {
+        setMessage(
+          `Your $1 reward code is ${confirmedCode}. ` +
+          "Show it to Golden Spreads when placing your next order. " +
+          "It expires in 30 days."
+        );
+
+        setError(
+          "Your reward was created successfully, but part of the wallet update failed. Refresh the page."
+        );
+      } else {
+        const definitelyNotProcessed = [
+          400, 401, 403, 404, 405
+        ].includes(Number(err.status));
+
+        if (definitelyNotProcessed && requestId) {
+          const cleared = clearPendingRedemptionId(
+            session.user.id,
+            requestId
+          );
+
+          if (cleared) {
+            setPendingRedemptionId(null);
+          }
+        }
+
+        setError(
+          getErrorMessage(
+            err,
+            "Could not redeem your points. Your request remains saved for retry."
+          )
+        );
+
+        setErrorStatus(err.status || null);
+      }
+    } finally {
+      redeemingRef.current = false;
+      setBusy(false);
     }
-
-  } finally {
-    redeemingRef.current = false;
-    setBusy(false);
   }
-}
-
-  // --------------------------------------------------
-  // LOADING SCREEN
-  // --------------------------------------------------
 
   if (!wallet && !error) {
     return (
@@ -1327,10 +1190,6 @@ function Wallet({ session, onReturnToSignIn }) {
       </section>
     );
   }
-
-  // --------------------------------------------------
-  // WALLET ERROR
-  // --------------------------------------------------
 
   if (error && !wallet) {
     return (
@@ -1362,30 +1221,16 @@ function Wallet({ session, onReturnToSignIn }) {
     );
   }
 
-  // --------------------------------------------------
-  // WALLET VALUES
-  // --------------------------------------------------
-
   const account = wallet.account;
-
   const points = Number(account.points_balance || 0);
-
   const progress = Math.min(100, (points % 200) / 2);
-
-  // --------------------------------------------------
-  // WALLET INTERFACE
-  // --------------------------------------------------
 
   return (
     <div className="rewards-dashboard">
-      {/* HEADER */}
-
       <div className="rewards-welcome-row">
         <div>
           <span className="rewards-eyebrow">YOUR PERSONAL LOYALTY ACCOUNT</span>
-
           <h1>Hello, {session.user.name || "Golden Member"}!</h1>
-
           <p>Your next order can bring you closer to a Golden reward.</p>
         </div>
 
@@ -1397,8 +1242,6 @@ function Wallet({ session, onReturnToSignIn }) {
           Sign out
         </button>
       </div>
-
-      {/* GOLDEN WALLET CARD */}
 
       <section className="golden-wallet-card">
         <div className="golden-wallet-top">
@@ -1433,8 +1276,6 @@ function Wallet({ session, onReturnToSignIn }) {
         </div>
       </section>
 
-      {/* POINT STATISTICS */}
-
       <div className="rewards-stats-grid">
         <div className="rewards-stat">
           <span>Total earned</span>
@@ -1453,13 +1294,10 @@ function Wallet({ session, onReturnToSignIn }) {
         </div>
       </div>
 
-      {/* NEXT REWARD */}
-
       <section className="rewards-panel rewards-progress-panel">
         <div className="rewards-panel-title">
           <div>
             <span className="rewards-eyebrow">YOUR NEXT REWARD</span>
-
             <h2>200 points = $1 off</h2>
           </div>
 
@@ -1496,8 +1334,6 @@ function Wallet({ session, onReturnToSignIn }) {
         </p>
       </section>
 
-      {/* MESSAGES */}
-
       {message && (
         <p className="rewards-alert success" role="status">
           {message}
@@ -1522,13 +1358,10 @@ function Wallet({ session, onReturnToSignIn }) {
         </section>
       )}
 
-      {/* REWARD CODES */}
-
       <section className="rewards-panel">
         <div className="rewards-panel-title">
           <div>
             <span className="rewards-eyebrow">YOUR REWARD CODES</span>
-
             <h2>Ready to use</h2>
           </div>
         </div>
@@ -1557,13 +1390,10 @@ function Wallet({ session, onReturnToSignIn }) {
         )}
       </section>
 
-      {/* ACCOUNT DETAILS */}
-
       <section className="rewards-panel">
         <div className="rewards-panel-title">
           <div>
             <span className="rewards-eyebrow">ACCOUNT DETAILS</span>
-
             <h2>Your contact number</h2>
           </div>
         </div>
@@ -1582,13 +1412,10 @@ function Wallet({ session, onReturnToSignIn }) {
         </form>
       </section>
 
-      {/* TRANSACTIONS */}
-
       <section className="rewards-panel">
         <div className="rewards-panel-title">
           <div>
             <span className="rewards-eyebrow">YOUR ACTIVITY</span>
-
             <h2>Recent transactions</h2>
           </div>
         </div>
@@ -1603,7 +1430,6 @@ function Wallet({ session, onReturnToSignIn }) {
               <div className="rewards-transaction" key={item.id}>
                 <div>
                   <strong>{item.description || item.transaction_type}</strong>
-
                   <span>{new Date(item.created_at).toLocaleDateString()}</span>
                 </div>
 
@@ -1619,8 +1445,6 @@ function Wallet({ session, onReturnToSignIn }) {
         )}
       </section>
 
-      {/* ADMIN ACCESS */}
-
       {isAdmin && (
         <div className="rewards-admin-link">
           <Link to="/admin/rewards">Open Golden Spreads admin dashboard →</Link>
@@ -1629,10 +1453,6 @@ function Wallet({ session, onReturnToSignIn }) {
     </div>
   );
 }
-
-// ======================================================
-// MAIN REWARDS PAGE
-// ======================================================
 
 export default function Rewards() {
   if (!authClient) {
@@ -1646,36 +1466,23 @@ export default function Rewards() {
   );
 }
 
-// ======================================================
-// AUTHENTICATION STATE MANAGEMENT
-// ======================================================
-
 function RewardsContent() {
   const { data: session, isPending, error } = authClient.useSession();
 
   const [forceSignIn, setForceSignIn] = useState(false);
-
   const [recoveryNotice, setRecoveryNotice] = useState("");
   const [resetBusy, setResetBusy] = useState(false);
-
   const [mfaStatus, setMfaStatus] = useState(null);
   const [loginPassword, setLoginPassword] = useState("");
-
   const [statusError, setStatusError] = useState("");
   const [statusRefresh, setStatusRefresh] = useState(0);
 
-  // Signup password remains only in React memory.
-  // It is never saved in localStorage or sessionStorage.
   const [signupPassword, setSignupPassword] = useState("");
   const [signupPending, setSignupPending] = useState(false);
 
   const [pendingEmail, setPendingEmail] = useState(
     () => sessionStorage.getItem(PENDING_EMAIL) || "",
   );
-
-  // --------------------------------------------------
-  // SERVER-SIDE LOGIN STATUS
-  // --------------------------------------------------
 
   useEffect(() => {
     if (forceSignIn || signupPending || pendingEmail || !session?.user?.id) {
@@ -1712,10 +1519,6 @@ function RewardsContent() {
     statusRefresh,
   ]);
 
-  // --------------------------------------------------
-  // NEW SIGNUP
-  // --------------------------------------------------
-
   function handleSignupStarted(password) {
     setSignupPassword(password);
     setSignupPending(true);
@@ -1725,42 +1528,24 @@ function RewardsContent() {
     setSignupPending(false);
   }
 
-  // --------------------------------------------------
-  // SHOW EMAIL VERIFICATION
-  // --------------------------------------------------
-
   function handleVerificationNeeded(email, password = "") {
     sessionStorage.setItem(PENDING_EMAIL, email);
-
     setSignupPassword(password || signupPassword);
     setPendingEmail(email);
     setSignupPending(false);
-
     setStatusError("");
   }
 
-  // --------------------------------------------------
-  // RETURN TO SIGN IN
-  // --------------------------------------------------
-
   function returnToSignIn(notice) {
     sessionStorage.removeItem(PENDING_EMAIL);
-
     setPendingEmail("");
     setSignupPassword("");
     setSignupPending(false);
-
     setLoginPassword("");
     setMfaStatus(null);
-
     setForceSignIn(true);
-
     setRecoveryNotice(notice || "Please sign in with your existing account.");
   }
-
-  // --------------------------------------------------
-  // CLEAR PREVIOUS SESSION
-  // --------------------------------------------------
 
   async function resetSession() {
     setResetBusy(true);
@@ -1781,24 +1566,14 @@ function RewardsContent() {
     }
   }
 
-  // --------------------------------------------------
-  // AFTER PASSWORD SIGN-IN
-  // --------------------------------------------------
-
   function handleAuthSuccess(password) {
     setLoginPassword(password || "");
     setForceSignIn(false);
-
     setRecoveryNotice("");
     setMfaStatus(null);
     setStatusError("");
-
     setStatusRefresh((value) => value + 1);
   }
-
-  // --------------------------------------------------
-  // PENDING VERIFICATION HAS PRIORITY
-  // --------------------------------------------------
 
   const currentPendingEmail =
     pendingEmail || sessionStorage.getItem(PENDING_EMAIL) || "";
@@ -1816,8 +1591,6 @@ function RewardsContent() {
     );
   }
 
-  // Keep form mounted if Neon updates the session
-  // while signup is still in progress.
   if (signupPending) {
     return (
       <AuthForm
@@ -1828,10 +1601,6 @@ function RewardsContent() {
       />
     );
   }
-
-  // --------------------------------------------------
-  // MANUAL SIGN-IN AFTER RECOVERY
-  // --------------------------------------------------
 
   if (forceSignIn) {
     return (
@@ -1847,10 +1616,6 @@ function RewardsContent() {
       />
     );
   }
-
-  // --------------------------------------------------
-  // CHECKING NEON SESSION
-  // --------------------------------------------------
 
   if (isPending) {
     return (
@@ -1875,10 +1640,6 @@ function RewardsContent() {
     );
   }
 
-  // --------------------------------------------------
-  // NO SESSION
-  // --------------------------------------------------
-
   if (!session) {
     return (
       <AuthForm
@@ -1889,10 +1650,6 @@ function RewardsContent() {
       />
     );
   }
-
-  // --------------------------------------------------
-  // STATUS ERROR
-  // --------------------------------------------------
 
   if (statusError) {
     return (
@@ -1911,10 +1668,6 @@ function RewardsContent() {
     );
   }
 
-  // --------------------------------------------------
-  // CHECKING MFA STATUS
-  // --------------------------------------------------
-
   if (!mfaStatus) {
     return (
       <section className="rewards-panel rewards-loading">
@@ -1922,10 +1675,6 @@ function RewardsContent() {
       </section>
     );
   }
-
-  // --------------------------------------------------
-  // EXISTING UNVERIFIED USER
-  // --------------------------------------------------
 
   if (!mfaStatus.emailVerified) {
     return (
@@ -1939,17 +1688,12 @@ function RewardsContent() {
     );
   }
 
-  // --------------------------------------------------
-  // RETURNING CUSTOMER MFA
-  // --------------------------------------------------
-
   if (!mfaStatus.authenticated) {
     return (
       <LoginVerification
         initialPassword={loginPassword}
         onVerified={() => {
           setLoginPassword("");
-
           setMfaStatus({
             emailVerified: true,
             authenticated: true,
@@ -1958,10 +1702,6 @@ function RewardsContent() {
       />
     );
   }
-
-  // --------------------------------------------------
-  // FULLY AUTHENTICATED WALLET
-  // --------------------------------------------------
 
   return <Wallet session={session} onReturnToSignIn={returnToSignIn} />;
 }
