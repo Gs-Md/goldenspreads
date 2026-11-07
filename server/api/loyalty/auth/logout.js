@@ -2,12 +2,12 @@
 const {
   clearSecondFactorCookie,
   requireSameOrigin,
-} = require('../../../server/lib/mfa');
+} = require('../../../lib/mfa');
 
 const {
   sendError,
   requireMethod,
-} = require('../../../server/lib/errors');
+} = require('../../../lib/errors');
 
 // --------------------------------------------------
 // GOLDEN SPREADS - LOGOUT VERIFICATION

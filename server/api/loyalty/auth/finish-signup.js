@@ -3,21 +3,21 @@ const crypto = require('crypto');
 
 const {
   getIdentityUser,
-} = require('../../../server/lib/auth');
+} = require('../../../lib/auth');
 
 const {
   requireSameOrigin,
   neonAuthPost,
   setSecondFactorCookie,
   assertMfaConfigured,
-} = require('../../../server/lib/mfa');
+} = require('../../../lib/mfa');
 
 const {
   HttpError,
   getBody,
   sendError,
   requireMethod,
-} = require('../../../server/lib/errors');
+} = require('../../../lib/errors');
 
 // ==================================================
 // GOLDEN SPREADS - FINISH SIGNUP

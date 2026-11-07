@@ -1,13 +1,13 @@
 
-const { getDb } = require('../../server/lib/db');
-const { getVerifiedUser } = require('../../server/lib/auth');
+const { getDb } = require('../../lib/db');
+const { getVerifiedUser } = require('../../lib/auth');
 
 const {
   sendError,
   requireMethod,
   getBody,
   HttpError,
-} = require('../../server/lib/errors');
+} = require('../../lib/errors');
 
 // ==================================================
 // GOLDEN SPREADS

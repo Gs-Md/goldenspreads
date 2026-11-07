@@ -1,6 +1,6 @@
-const { getDb } = require('../../../server/lib/db');
-const { requireAdmin } = require('../../../server/lib/auth');
-const { sendError, requireMethod } = require('../../../server/lib/errors');
+const { getDb } = require('../../../lib/db');
+const { requireAdmin } = require('../../../lib/auth');
+const { sendError, requireMethod } = require('../../../lib/errors');
 
 module.exports = async function handler(req, res) {
   if (!requireMethod(req, res, ['GET'])) return;

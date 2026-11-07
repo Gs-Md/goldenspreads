@@ -1,14 +1,14 @@
 
-const { getDb } = require('../../../server/lib/db');
+const { getDb } = require('../../../lib/db');
 
 const {
   requireAdmin,
-} = require('../../../server/lib/auth');
+} = require('../../../lib/auth');
 
 const {
   sendError,
   requireMethod,
-} = require('../../../server/lib/errors');
+} = require('../../../lib/errors');
 
 // --------------------------------------------------
 // GOLDEN SPREADS - ADMIN CUSTOMER MANAGEMENT

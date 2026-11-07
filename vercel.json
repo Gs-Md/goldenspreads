@@ -1,6 +1,16 @@
 {
   "rewrites": [
-    { "source": "/rewards", "destination": "/index.html" },
-    { "source": "/admin/rewards", "destination": "/index.html" }
+    {
+      "source": "/api/loyalty/:route*",
+      "destination": "/api/loyalty-router?route=:route*"
+    },
+    {
+      "source": "/rewards",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/admin/rewards",
+      "destination": "/index.html"
+    }
   ]
 }

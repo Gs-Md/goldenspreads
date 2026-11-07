@@ -1,6 +1,6 @@
 
 const { neon } = require('@neondatabase/serverless');
-const { requireMethod } = require('../../server/lib/errors');
+const { requireMethod } = require('../../lib/errors');
 
 module.exports = async function handler(req, res) {
   if (!requireMethod(req, res, ['GET'])) return;

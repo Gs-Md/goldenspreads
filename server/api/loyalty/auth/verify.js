@@ -1,24 +1,24 @@
 
 const {
   getIdentityUser,
-} = require('../../../server/lib/auth');
+} = require('../../../lib/auth');
 
 const {
   requireSameOrigin,
   neonAuthPost,
   setSecondFactorCookie,
-} = require('../../../server/lib/mfa');
+} = require('../../../lib/mfa');
 
 const {
   getDb,
-} = require('../../../server/lib/db');
+} = require('../../../lib/db');
 
 const {
   HttpError,
   getBody,
   sendError,
   requireMethod,
-} = require('../../../server/lib/errors');
+} = require('../../../lib/errors');
 
 module.exports = async function handler(req, res) {
   if (!requireMethod(req, res, ['POST'])) {

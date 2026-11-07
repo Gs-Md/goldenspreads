@@ -1,14 +1,14 @@
 
-const { getDb } = require('../../../server/lib/db');
-const { requireAdmin } = require('../../../server/lib/auth');
-const { requireSameOrigin } = require('../../../server/lib/mfa');
+const { getDb } = require('../../../lib/db');
+const { requireAdmin } = require('../../../lib/auth');
+const { requireSameOrigin } = require('../../../lib/mfa');
 
 const {
   HttpError,
   getBody,
   sendError,
   requireMethod,
-} = require('../../../server/lib/errors');
+} = require('../../../lib/errors');
 
 // ==================================================
 // GOLDEN SPREADS - DELETE CUSTOMER

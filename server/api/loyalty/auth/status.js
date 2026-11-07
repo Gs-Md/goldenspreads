@@ -1,7 +1,7 @@
 
-const { getIdentityUser } = require('../../../server/lib/auth');
-const { hasSecondFactor } = require('../../../server/lib/mfa');
-const { sendError, requireMethod } = require('../../../server/lib/errors');
+const { getIdentityUser } = require('../../../lib/auth');
+const { hasSecondFactor } = require('../../../lib/mfa');
+const { sendError, requireMethod } = require('../../../lib/errors');
 
 // --------------------------------------------------
 // GOLDEN REWARDS - AUTHENTICATION STATUS

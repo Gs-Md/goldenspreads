@@ -1,20 +1,20 @@
 
-const { getIdentityUser } = require('../../../server/lib/auth');
+const { getIdentityUser } = require('../../../lib/auth');
 
 const {
   requireSameOrigin,
   neonAuthPost,
   assertMfaConfigured,
-} = require('../../../server/lib/mfa');
+} = require('../../../lib/mfa');
 
-const { getDb } = require('../../../server/lib/db');
+const { getDb } = require('../../../lib/db');
 
 const {
   HttpError,
   getBody,
   sendError,
   requireMethod,
-} = require('../../../server/lib/errors');
+} = require('../../../lib/errors');
 
 // --------------------------------------------------
 // GOLDEN SPREADS - START LOGIN VERIFICATION
