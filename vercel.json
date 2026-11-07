@@ -2,7 +2,7 @@
   "rewrites": [
     {
       "source": "/api/neon-auth/:path*",
-      "destination": "https://ep-icy-mud-b9declh3.neonauth.c-7.eu-central-1.aws.neon.tech/neondb/auth/:path*"
+      "destination": "/api/neon-auth-router?path=:path*"
     },
     {
       "source": "/api/loyalty/:route*",
