@@ -1,7 +1,6 @@
+import { authClient, authBaseUrl } from './authClient';
 
-import { authClient } from './authClient';
-
-const AUTH_URL = process.env.REACT_APP_NEON_AUTH_BASE_URL;
+const AUTH_URL = authBaseUrl;
 
 // --------------------------------------------------
 // GET NEON AUTH JWT
@@ -56,7 +55,6 @@ export async function loyaltyRequest(path, options = {}) {
     );
   }
 
-  // Retrieve the user's JWT and current Neon session.
   const [token, sessionResult] = await Promise.all([
     getNeonToken(),
     authClient.getSession(),
@@ -70,7 +68,6 @@ export async function loyaltyRequest(path, options = {}) {
     );
   }
 
-  // Send authentication credentials to our backend.
   const response = await fetch(path, {
     ...options,
     credentials: 'same-origin',
@@ -87,7 +84,6 @@ export async function loyaltyRequest(path, options = {}) {
     },
   });
 
-  // Read the backend response.
   const payload = await response.json().catch(() => ({}));
 
   if (!response.ok) {
