@@ -44,6 +44,14 @@ export default function Navbar() {
           >
             About
           </button>
+
+          <button
+            type="button"
+            onClick={() => navigate("/rewards")}
+            className="nav-btn rewards-nav-btn"
+          >
+            Golden Rewards
+          </button>
         </div>
       </div>
     </nav>
