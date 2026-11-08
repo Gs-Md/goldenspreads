@@ -1,4 +1,3 @@
-
 const { getIdentityUser } = require('../../../lib/auth');
 
 const {
@@ -8,6 +7,10 @@ const {
 } = require('../../../lib/mfa');
 
 const { getDb } = require('../../../lib/db');
+
+const {
+  reserveOtpRequest,
+} = require('../../../lib/otpRateLimit');
 
 const {
   HttpError,
@@ -29,16 +32,19 @@ module.exports = async function handler(req, res) {
   try {
 
     // 1. Check request origin.
+
     requireSameOrigin(req);
 
-    // 2. Ensure the MFA signing secret exists.
+    // 2. Ensure MFA is configured.
+
     assertMfaConfigured();
 
-    // 3. Verify the existing Neon Auth identity
-    // and active session.
+    // 3. Verify the existing Neon Auth identity.
+
     const user = await getIdentityUser(req);
 
     // 4. The email must already be verified.
+
     if (!user.emailVerified) {
       throw new HttpError(
         403,
@@ -47,6 +53,7 @@ module.exports = async function handler(req, res) {
     }
 
     // 5. Read the customer's password.
+
     const { password } = getBody(req);
 
     if (
@@ -60,47 +67,9 @@ module.exports = async function handler(req, res) {
       );
     }
 
-    const sql = getDb();
-
     // ------------------------------------------------
-    // 6. RATE LIMITING
+    // 6. VERIFY PASSWORD THROUGH NEON AUTH
     // ------------------------------------------------
-
-    // Maximum five code requests in ten minutes.
-    const recent = await sql`
-      SELECT created_at
-      FROM public.golden_login_challenges
-      WHERE user_id = ${user.id}
-        AND created_at > now() - interval '10 minutes'
-      ORDER BY created_at DESC
-      LIMIT 5
-    `;
-
-    if (recent.length >= 5) {
-      throw new HttpError(
-        429,
-        'Too many verification requests. Try again later.'
-      );
-    }
-
-    // Require at least 60 seconds between requests.
-    if (
-      recent.length &&
-      Date.now() -
-        new Date(recent[0].created_at).getTime() < 60000
-    ) {
-      throw new HttpError(
-        429,
-        'Please wait a minute before requesting another code.'
-      );
-    }
-
-    // ------------------------------------------------
-    // 7. VERIFY PASSWORD THROUGH NEON AUTH
-    // ------------------------------------------------
-
-    // The password is checked by Neon Auth.
-    // We do not store the password in our database.
 
     const passwordCheck = await neonAuthPost(
       'sign-in/email',
@@ -123,11 +92,34 @@ module.exports = async function handler(req, res) {
     }
 
     // ------------------------------------------------
-    // 8. CREATE A TEMPORARY LOGIN CHALLENGE
+    // 7. RESERVE LOGIN OTP REQUEST
     // ------------------------------------------------
 
-    // This challenge expires after five minutes,
-    // according to the database default.
+    const limit = await reserveOtpRequest(
+      'login',
+      user.email
+    );
+
+    if (!limit.allowed) {
+
+      if (limit.retryAfterSeconds > 0) {
+        res.setHeader(
+          'Retry-After',
+          String(limit.retryAfterSeconds)
+        );
+      }
+
+      throw new HttpError(
+        429,
+        limit.message
+      );
+    }
+
+    // ------------------------------------------------
+    // 8. CREATE LOGIN CHALLENGE
+    // ------------------------------------------------
+
+    const sql = getDb();
 
     const inserted = await sql`
       INSERT INTO public.golden_login_challenges (
@@ -144,11 +136,8 @@ module.exports = async function handler(req, res) {
     const challengeId = inserted[0].id;
 
     // ------------------------------------------------
-    // 9. REQUEST A SIX-DIGIT EMAIL CODE
+    // 9. REQUEST SIX-DIGIT EMAIL CODE
     // ------------------------------------------------
-
-    // Neon Auth handles email delivery through
-    // its configured email OTP provider.
 
     const sent = await neonAuthPost(
       'email-otp/send-verification-otp',
@@ -159,8 +148,7 @@ module.exports = async function handler(req, res) {
       req.headers.origin
     );
 
-    // If Neon rejects the code request,
-    // delete our unfinished challenge.
+    // Delete unfinished challenge if Neon rejects.
 
     if (!sent.ok) {
 
