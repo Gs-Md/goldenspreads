@@ -1,34 +1,46 @@
-/* ===== NAVBAR CONTAINER ===== */
+/* =========================================
+   GOLDEN SPREADS NAVBAR
+========================================= */
 
 .navbar {
   position: sticky;
   top: 0;
-  z-index: 10;
+  z-index: 1000;
+  width: 100%;
 
-  background: rgba(255, 255, 255, 0.75);
-  backdrop-filter: blur(12px);
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
 
   border-bottom: 1px solid rgba(0, 0, 0, 0.08);
 }
 
-/* ===== INNER WRAPPER ===== */
+.navbar * {
+  box-sizing: border-box;
+}
+
+/* INNER WRAPPER */
 
 .nav-inner {
-  width: 1120px;
+  position: relative;
+
+  width: min(1120px, calc(100% - 48px));
+  min-height: 74px;
   margin: 0 auto;
-  height: 74px;
 
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 20px;
 }
 
-/* ===== LOGO ===== */
+/* LOGO */
 
 .logo {
   display: flex;
   align-items: center;
   gap: 10px;
+  flex-shrink: 0;
 }
 
 .logo-mark {
@@ -47,7 +59,8 @@
   background: rgba(184, 137, 11, 0.14);
   border: 1px solid rgba(184, 137, 11, 0.28);
 
-  transition: transform 220ms cubic-bezier(0.2, 0.8, 0.2, 1),
+  transition:
+    transform 220ms ease,
     background 220ms ease,
     border-color 220ms ease;
 }
@@ -63,24 +76,27 @@
   font-size: 20px;
   font-weight: 700;
   letter-spacing: 0.3px;
+  color: #24180f;
 }
 
-/* ===== NAV LINKS CONTAINER ===== */
+/* DESKTOP NAVIGATION */
 
 .nav-links {
   display: flex;
-  gap: 18px;
+  align-items: center;
+  gap: 10px;
+  margin-left: auto;
 }
-
-/* ===== SHARED STYLE FOR LINKS + BUTTONS ===== */
 
 .nav-links a,
 .nav-btn {
+  appearance: none;
   background: none;
   border: 1px solid transparent;
 
-  padding: 10px 12px;
+  padding: 10px 14px;
 
+  font-family: inherit;
   font-weight: 800;
   font-size: 13px;
   color: rgba(31, 31, 31, 0.82);
@@ -89,41 +105,38 @@
   cursor: pointer;
   text-decoration: none;
 
-  /* smoother */
-  transition: background 240ms cubic-bezier(0.2, 0.8, 0.2, 1),
-    border-color 240ms cubic-bezier(0.2, 0.8, 0.2, 1),
-    color 240ms cubic-bezier(0.2, 0.8, 0.2, 1),
-    transform 180ms cubic-bezier(0.2, 0.8, 0.2, 1),
-    box-shadow 240ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition:
+    background 240ms ease,
+    border-color 240ms ease,
+    color 240ms ease,
+    transform 180ms ease,
+    box-shadow 240ms ease;
 }
 
-/* remove default button styles */
 .nav-btn {
   outline: none;
-  font-family: inherit;
 }
 
-/* ===== HOVER STATE ===== */
+/* HOVER */
 
 .nav-links a:hover,
 .nav-btn:hover {
   border-color: rgba(184, 137, 11, 0.35);
   background: rgba(184, 137, 11, 0.10);
-  color: rgba(31, 31, 31, 0.92);
+  color: #24180f;
 
   transform: translateY(-1px);
   box-shadow: 0 10px 18px rgba(0, 0, 0, 0.06);
 }
 
-/* ===== PRESS (CLICK) FEEL ===== */
+/* ACTIVE */
 
 .nav-links a:active,
 .nav-btn:active {
-  transform: translateY(0px) scale(0.98);
-  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.05);
+  transform: scale(0.98);
 }
 
-/* ===== KEYBOARD FOCUS (ACCESSIBLE + SMOOTH) ===== */
+/* ACCESSIBILITY */
 
 .nav-links a:focus-visible,
 .nav-btn:focus-visible {
@@ -131,10 +144,175 @@
   box-shadow: 0 0 0 4px rgba(184, 137, 11, 0.18);
 }
 
-/* ===== OPTIONAL: if you made nav responsive earlier ===== */
+/* HAMBURGER - HIDDEN ON DESKTOP */
 
-@media (max-width: 1200px) {
+.nav-menu-toggle {
+  display: none;
+  appearance: none;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+/* =========================================
+   MOBILE NAVIGATION
+========================================= */
+
+@media (max-width: 680px) {
+
   .nav-inner {
-    width: 92%;
+    width: calc(100% - 28px);
+    min-height: 68px;
+    gap: 10px;
   }
+
+  .logo {
+    gap: 8px;
+  }
+
+  .logo-mark {
+    width: 37px;
+    height: 37px;
+    border-radius: 11px;
+  }
+
+  .logo-text {
+    font-size: 18px;
+  }
+
+  /* HAMBURGER BUTTON */
+
+  .nav-menu-toggle {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+
+    border: 1px solid rgba(184, 137, 11, 0.25);
+    border-radius: 12px;
+
+    background: rgba(184, 137, 11, 0.07);
+
+    transition: background 200ms ease;
+  }
+
+  .nav-menu-toggle:hover {
+    background: rgba(184, 137, 11, 0.15);
+  }
+
+  .nav-menu-toggle > span {
+    width: 19px;
+    height: 2px;
+    border-radius: 5px;
+    background: #352315;
+
+    transition:
+      transform 220ms ease,
+      opacity 220ms ease;
+  }
+
+  /* HAMBURGER TO X */
+
+  .nav-menu-toggle.is-open > span:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+  }
+
+  .nav-menu-toggle.is-open > span:nth-child(2) {
+    opacity: 0;
+  }
+
+  .nav-menu-toggle.is-open > span:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+  }
+
+  /* DROPDOWN MENU */
+
+  .nav-links {
+    display: none;
+
+    position: absolute;
+    top: 100%;
+    right: 0;
+
+    width: min(100%, 340px);
+    margin: 0;
+    padding: 12px;
+
+    flex-direction: column;
+    align-items: stretch;
+    gap: 5px;
+
+    border: 1px solid rgba(184, 137, 11, 0.2);
+    border-radius: 0 0 17px 17px;
+
+    background: #fffdf8;
+
+    box-shadow: 0 16px 35px rgba(0, 0, 0, 0.13);
+  }
+
+  .nav-links.is-open {
+    display: flex;
+    animation: navbar-dropdown 180ms ease both;
+  }
+
+  .nav-links .nav-btn {
+    width: 100%;
+    min-height: 46px;
+    padding: 12px 15px;
+
+    text-align: left;
+    border-radius: 10px;
+
+    font-size: 14px;
+  }
+
+  .nav-links .nav-btn:hover {
+    transform: none;
+    box-shadow: none;
+  }
+
+}
+
+@keyframes navbar-dropdown {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* SMALL PHONES */
+
+@media (max-width: 380px) {
+
+  .nav-inner {
+    width: calc(100% - 22px);
+  }
+
+  .logo-text {
+    font-size: 17px;
+  }
+
+}
+
+/* REDUCED MOTION */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .navbar *,
+  .navbar *::before,
+  .navbar *::after {
+    animation: none !important;
+    transition-duration: 0.01ms !important;
+  }
+
 }

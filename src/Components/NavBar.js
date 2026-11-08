@@ -1,34 +1,68 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../Styles/Navbar.css";
 
 export default function Navbar() {
   const navigate = useNavigate();
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const closeMenu = () => {
+    setMenuOpen(false);
+  };
 
   const scrollToId = (id) => {
+    closeMenu();
     navigate("/");
 
-    setTimeout(() => {
+    window.setTimeout(() => {
       if (id === "top") {
-        window.scrollTo({ top: 0, behavior: "smooth" });
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
       } else {
         const section = document.getElementById(id);
+
         if (section) {
-          section.scrollIntoView({ behavior: "smooth" });
+          section.scrollIntoView({
+            behavior: "smooth",
+          });
         }
       }
-    }, 100);
+    }, 120);
+  };
+
+  const goToRewards = () => {
+    closeMenu();
+    navigate("/rewards");
   };
 
   return (
     <nav className="navbar">
       <div className="nav-inner">
+
         <div className="logo">
           <span className="logo-mark">GS</span>
           <span className="logo-text">Golden Spreads</span>
         </div>
 
-        <div className="nav-links">
+        <button
+          type="button"
+          className={`nav-menu-toggle ${menuOpen ? "is-open" : ""}`}
+          aria-label={menuOpen ? "Close navigation menu" : "Open navigation menu"}
+          aria-expanded={menuOpen}
+          aria-controls="primary-navigation"
+          onClick={() => setMenuOpen((previous) => !previous)}
+        >
+          <span />
+          <span />
+          <span />
+        </button>
+
+        <div
+          id="primary-navigation"
+          className={`nav-links ${menuOpen ? "is-open" : ""}`}
+        >
           <button
             type="button"
             onClick={() => scrollToId("top")}
@@ -47,12 +81,13 @@ export default function Navbar() {
 
           <button
             type="button"
-            onClick={() => navigate("/rewards")}
+            onClick={goToRewards}
             className="nav-btn rewards-nav-btn"
           >
             Golden Rewards
           </button>
         </div>
+
       </div>
     </nav>
   );
