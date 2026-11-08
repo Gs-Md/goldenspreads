@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { authClient } from '../lib/authClient';
 import { loyaltyRequest } from '../lib/loyaltyApi';
 import '../Styles/Rewards.css';
+import { useLanguage } from '../lib/LanguageContext';
 
 // ==================================================
 // UNIQUE PURCHASE ID
@@ -199,6 +200,7 @@ function markPendingPurchaseConfirmed(adminUserId, purchase) {
 // ==================================================
 
 function AdminContent({ session }) {
+  const { language } = useLanguage();
   const [authorized, setAuthorized] = useState(null);
   const [adminEmail, setAdminEmail] = useState('');
 
@@ -633,15 +635,22 @@ function AdminContent({ session }) {
 
     const customer = selectedDeleteUser;
 
-    const confirmed = window.confirm(
-      'PERMANENT ACCOUNT DELETION\n\n' +
-      `Customer: ${customer.name || 'Golden Member'}\n` +
-      `Email: ${customer.email}\n\n` +
-      'This deletes the login account, wallet, points, ' +
-      'purchase history and reward codes.\n\n' +
-      'This action cannot be undone.\n\n' +
-      'Delete this customer permanently?'
-    );
+    const confirmationMessage = language === 'ar'
+      ? 'حذف الحساب نهائياً\n\n' +
+        `العميل: ${customer.name || 'عضو غولدن'}\n` +
+        `البريد الإلكتروني: ${customer.email}\n\n` +
+        'سيؤدي ذلك إلى حذف حساب تسجيل الدخول والمحفظة والنقاط وسجل المشتريات ورموز المكافآت.\n\n' +
+        'لا يمكن التراجع عن هذا الإجراء.\n\n' +
+        'هل تريد حذف هذا العميل نهائياً؟'
+      : 'PERMANENT ACCOUNT DELETION\n\n' +
+        `Customer: ${customer.name || 'Golden Member'}\n` +
+        `Email: ${customer.email}\n\n` +
+        'This deletes the login account, wallet, points, ' +
+        'purchase history and reward codes.\n\n' +
+        'This action cannot be undone.\n\n' +
+        'Delete this customer permanently?';
+
+    const confirmed = window.confirm(confirmationMessage);
 
     if (!confirmed) return;
 

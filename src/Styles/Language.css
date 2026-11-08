@@ -1,0 +1,273 @@
+/* Golden Spreads bilingual layout support */
+.language-toggle {
+  min-width: 82px;
+  border: 1px solid rgba(184, 137, 11, 0.30) !important;
+  border-radius: 999px !important;
+  color: #805b0b !important;
+  background: rgba(184, 137, 11, 0.08) !important;
+  font-weight: 900 !important;
+  letter-spacing: 0 !important;
+}
+
+.language-toggle:hover {
+  background: rgba(184, 137, 11, 0.16) !important;
+}
+
+html[dir="rtl"] body,
+html[dir="rtl"] button,
+html[dir="rtl"] input,
+html[dir="rtl"] textarea,
+html[dir="rtl"] select {
+  font-family: "Tajawal", "Inter", system-ui, sans-serif;
+}
+
+html[dir="rtl"] body {
+  direction: rtl;
+  text-align: right;
+}
+
+html[dir="rtl"] .navbar,
+html[dir="rtl"] .nav-inner,
+html[dir="rtl"] .nav-links {
+  direction: rtl;
+}
+
+html[dir="rtl"] .logo {
+  direction: ltr;
+}
+
+html[dir="rtl"] .nav-links .nav-btn {
+  text-align: right;
+}
+
+html[dir="rtl"] .gs-home {
+  direction: rtl;
+}
+
+html[dir="rtl"] .gs-hero-grid,
+html[dir="rtl"] .gs-hero-topline,
+html[dir="rtl"] .gs-hero-bottom,
+html[dir="rtl"] .gs-hero-actions,
+html[dir="rtl"] .gs-hero-stats,
+html[dir="rtl"] .gs-section-heading,
+html[dir="rtl"] .gs-story-cards,
+html[dir="rtl"] .gs-story-footer {
+  direction: rtl;
+}
+
+html[dir="rtl"] .gs-hero-copy,
+html[dir="rtl"] .gs-section-heading,
+html[dir="rtl"] .gs-story-heading,
+html[dir="rtl"] .gs-story-card,
+html[dir="rtl"] .gs-last-call-content,
+html[dir="rtl"] .about-section,
+html[dir="rtl"] .quality-section,
+html[dir="rtl"] .community-section {
+  text-align: right;
+}
+
+html[dir="rtl"] .gs-hero-note,
+html[dir="rtl"] .gs-hero-kicker {
+  direction: rtl;
+}
+
+html[dir="rtl"] .gs-product-count {
+  text-align: left;
+}
+
+html[dir="rtl"] .product-card,
+html[dir="rtl"] .product-body {
+  direction: rtl;
+  text-align: right;
+}
+
+html[dir="rtl"] .product-meta {
+  direction: ltr;
+}
+
+html[dir="rtl"] .product-ingredients,
+html[dir="rtl"] .product-bestuse {
+  text-align: right;
+}
+
+html[dir="rtl"] .about-highlights,
+html[dir="rtl"] .quality-grid {
+  direction: rtl;
+}
+
+html[dir="rtl"] .community-section {
+  direction: rtl;
+}
+
+html[dir="rtl"] .community-track {
+  direction: ltr;
+}
+
+html[dir="rtl"] .community-card-copy {
+  direction: rtl;
+  text-align: right;
+}
+
+html[dir="rtl"] .community-arrows,
+html[dir="rtl"] .community-dots {
+  direction: ltr;
+}
+
+html[dir="rtl"] .footer,
+html[dir="rtl"] .footer-inner {
+  direction: rtl;
+  text-align: center;
+}
+
+html[dir="rtl"] .rewards-page,
+html[dir="rtl"] .rewards-dashboard,
+html[dir="rtl"] .rewards-panel,
+html[dir="rtl"] .rewards-auth-card {
+  direction: rtl;
+  text-align: right;
+}
+
+html[dir="rtl"] .rewards-auth-brand {
+  inset: 0 0 0 auto !important;
+  border-right: 0;
+  border-left: 1px solid rgba(235, 195, 115, 0.2);
+}
+
+html[dir="rtl"] .rewards-auth-card {
+  padding: 55px 46% 50px 6%;
+}
+
+html[dir="rtl"] .rewards-form label,
+html[dir="rtl"] .rewards-small,
+html[dir="rtl"] .rewards-terms,
+html[dir="rtl"] .rewards-empty,
+html[dir="rtl"] .rewards-card-heading,
+html[dir="rtl"] .rewards-panel-title,
+html[dir="rtl"] .rewards-welcome-row {
+  text-align: right;
+}
+
+html[dir="rtl"] .rewards-form input,
+html[dir="rtl"] .rewards-form select,
+html[dir="rtl"] .rewards-inline-form input {
+  direction: rtl;
+  text-align: right;
+}
+
+html[dir="rtl"] .rewards-form input[type="email"],
+html[dir="rtl"] .rewards-form input[type="password"],
+html[dir="rtl"] .rewards-form input[type="number"],
+html[dir="rtl"] .rewards-form input[placeholder="DELETE"] {
+  direction: ltr;
+  text-align: left;
+}
+
+html[dir="rtl"] .rewards-tabs,
+html[dir="rtl"] .rewards-panel-title,
+html[dir="rtl"] .rewards-welcome-row,
+html[dir="rtl"] .rewards-customer-row,
+html[dir="rtl"] .rewards-redemption-row,
+html[dir="rtl"] .rewards-transaction,
+html[dir="rtl"] .golden-wallet-top,
+html[dir="rtl"] .golden-wallet-bottom,
+html[dir="rtl"] .rewards-stats-grid {
+  direction: rtl;
+}
+
+html[dir="rtl"] .rewards-customer-row,
+html[dir="rtl"] .rewards-redemption-row,
+html[dir="rtl"] .rewards-transaction {
+  text-align: right;
+}
+
+html[dir="rtl"] .rewards-customer-row > span,
+html[dir="rtl"] .rewards-redemption-row > div,
+html[dir="rtl"] .rewards-transaction > div {
+  text-align: right;
+}
+
+html[dir="rtl"] .rewards-alert {
+  text-align: right;
+}
+
+html[dir="rtl"] .rewards-stat strong,
+html[dir="rtl"] .golden-wallet-balance strong,
+html[dir="rtl"] .golden-wallet-mark,
+html[dir="rtl"] .rewards-code-item strong,
+html[dir="rtl"] .rewards-redemption-row strong,
+html[dir="rtl"] .rewards-transaction > strong,
+html[dir="rtl"] .rewards-customer-row > strong {
+  unicode-bidi: plaintext;
+}
+
+html[dir="rtl"] .chat-box,
+html[dir="rtl"] .chat-header,
+html[dir="rtl"] .chat-body,
+html[dir="rtl"] .chat-quick-actions,
+html[dir="rtl"] .chat-input {
+  direction: rtl;
+}
+
+html[dir="rtl"] .chat-header,
+html[dir="rtl"] .chat-msg,
+html[dir="rtl"] .chat-input input {
+  text-align: right;
+}
+
+html[dir="rtl"] .chat-input input {
+  direction: rtl;
+}
+
+html[dir="rtl"] .chat-fab {
+  right: auto;
+  left: 24px;
+}
+
+html[dir="rtl"] .chat-box {
+  right: auto;
+  left: 24px;
+}
+
+@media (max-width: 760px) {
+  html[dir="rtl"] .rewards-auth-card {
+    padding: 300px 24px 36px;
+  }
+
+  html[dir="rtl"] .rewards-auth-brand {
+    inset: 0 0 auto auto !important;
+    width: 100% !important;
+    height: 250px;
+    border-left: 0;
+    border-bottom: 1px solid rgba(235, 195, 115, 0.2);
+  }
+
+  html[dir="rtl"] .gs-hero-copy,
+  html[dir="rtl"] .gs-story-heading,
+  html[dir="rtl"] .gs-last-call-content {
+    text-align: right;
+  }
+
+  html[dir="rtl"] .gs-product-count {
+    text-align: right;
+  }
+
+  html[dir="rtl"] .chat-fab {
+    left: 16px;
+  }
+
+  html[dir="rtl"] .chat-box {
+    left: 12px;
+    right: 12px;
+    width: auto;
+  }
+}
+
+html[dir="rtl"] .rewards-form input[type="tel"],
+html[dir="rtl"] .rewards-form input[autocomplete="tel"],
+html[dir="rtl"] .rewards-form input[type="email"],
+html[dir="rtl"] .rewards-form input[type="password"],
+html[dir="rtl"] .rewards-form input[type="number"],
+html[dir="rtl"] .rewards-form input[autocomplete="one-time-code"] {
+  direction: ltr;
+  text-align: left;
+}

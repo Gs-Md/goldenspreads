@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../Styles/Navbar.css";
+import { useLanguage } from "../lib/LanguageContext";
 
 export default function Navbar() {
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
+  const { language, toggleLanguage } = useLanguage();
 
   const closeMenu = () => {
     setMenuOpen(false);
@@ -85,6 +87,19 @@ export default function Navbar() {
             className="nav-btn rewards-nav-btn"
           >
             Golden Rewards
+          </button>
+
+          <button
+            type="button"
+            className="nav-btn language-toggle"
+            onClick={() => {
+              toggleLanguage();
+              closeMenu();
+            }}
+            aria-label={language === "en" ? "Switch language to Arabic" : "Switch language to English"}
+            title={language === "en" ? "Switch language to Arabic" : "Switch language to English"}
+          >
+            {language === "en" ? "العربية" : "English"}
           </button>
         </div>
 
